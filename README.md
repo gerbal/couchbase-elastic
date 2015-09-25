@@ -26,6 +26,6 @@ This repository contains **Dockerfile** of [Couchbase](http://www.couchbase.com/
 
    docker run -d --link elastic-couchbase --name couchbase-elastic -p 8091:8091 couchbase-elastic
 
-see [clakech/elasticsearch](https://hub.docker.com/r/couchbase/server/) for more options
+see [couchbase/server](https://hub.docker.com/r/couchbase/server/) for more options
 
 After few seconds, open `http://<host>:8091` using login root/foobar to see the result.
