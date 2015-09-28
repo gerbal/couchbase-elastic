@@ -1,0 +1,19 @@
+elastic:
+    container_name: elastic
+    image: elastic-couchbase
+    ports:
+        - "9200:9200"
+        - "9300:9300"
+        - "9091:9091"
+couchbase:
+    image: couchbase-elastic
+    command: sh wait_to_start.sh
+    links:
+        - elastic:elastic-couchbase
+    environment:
+        - WAIT_COMMAND=[ $(curl --write-out %{http_code} --silent --output /dev/null http://elastic-couchbase:9200/data) = 200 ]
+        - WAIT_START_CMD=/init.sh
+        - WAIT_SLEEP=2
+        - WAIT_LOOPS=10
+    ports:
+        - "8091:8091"
