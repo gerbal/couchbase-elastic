@@ -8,4 +8,5 @@ COPY init.sh /
 
 ENTRYPOINT ["/init.sh"]
 
+EXPOSE 8091
 
