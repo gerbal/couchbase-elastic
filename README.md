@@ -16,7 +16,13 @@ This repository contains **Dockerfile** of [Couchbase](http://www.couchbase.com/
    (alternatively, you can build an image from Dockerfile: `docker build -t="clakech/couchbase-elastic" github.com/clakech/couchbase-elastic`)
 
 
-### Usage
+### Usage with docker compose
+
+   docker-compose up -d
+   
+   After few seconds, open `http://<host>:8091` using login root/foobar to see the result.
+
+### Usage with docker only
 
    run a [elastic-couchbase](https://registry.hub.docker.com/u/clakech/couchbase-elastic/) node first:
    
