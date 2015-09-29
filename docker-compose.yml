@@ -1,13 +1,13 @@
 elastic:
     container_name: elastic
-    image: elastic-couchbase
+    image: clakech/elastic-couchbase
     ports:
         - "9200:9200"
         - "9300:9300"
         - "9091:9091"
 elastic2:
     container_name: elastic2
-    image: elastic-couchbase
+    image: clakech/elastic-couchbase
     ports:
         - "9201:9200"
         - "9301:9300"
