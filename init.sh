@@ -32,7 +32,7 @@ if [ "$INIT_CLUSTER" = "1" ]; then
         --xdcr-replication-mode=capi
 else
     ip=`hostname --ip-address`
-    wait_for_start couchbase-cli rebalance -c couchbase-first:8091 -u $ADMIN_LOGIN -p $ADMIN_PASSWORD --server-add=$ip:8091 --server-add-username=$ADMIN_LOGIN --server-add-password=$ADMIN_PASSWORD
+    wait_for_start couchbase-cli rebalance -c couchbase:8091 -u $ADMIN_LOGIN -p $ADMIN_PASSWORD --server-add=$ip:8091 --server-add-username=$ADMIN_LOGIN --server-add-password=$ADMIN_PASSWORD
 fi
 
 wait

@@ -29,7 +29,7 @@ couchbase2:
     build: .
     command: sh wait_to_start.sh
     links:
-        - couchbase:couchbase-first
+        - couchbase
     environment:
         - WAIT_COMMAND=[ $(couchbase-cli server-list --cluster=localhost:8091 -u root -p foobar) = 342 ]
         - WAIT_START_CMD=/init.sh
