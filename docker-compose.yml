@@ -7,33 +7,29 @@ elastic-init:
     environment:
         - INIT_CLUSTER=1
 elastic:
+    image: clakech/elastic-couchbase
     ports:
         - "9200"
         - "9300"
         - "9091"
-    image: clakech/elastic-couchbase
 couchbase-init:
     build: .
-    command: sh wait_to_start.sh
-    links:
-        - elastic-init:elastic-couchbase
     ports:
         - "8091:8091"
-    environment:
-        - WAIT_COMMAND=[ echo "WAIT ELASTIC"; $(curl --write-out %{http_code} --silent --output /dev/null http://elastic-couchbase:9200/data) = 200 ]
-        - WAIT_START_CMD=/init.sh
-        - WAIT_SLEEP=2
-        - WAIT_LOOPS=10
-        - INIT_CLUSTER=1
 couchbase:
     build: .
-    command: sh wait_to_start.sh
     links:
         - couchbase-init:couchbase
+        - elastic-init:elastic-couchbase
+    ports:
+        - "8091"
+couchbase-config:
+    build: config
+    links:
+        - couchbase:couchbase
+        - elastic-init:elastic-couchbase
     ports:
         - "8091"
     environment:
-        - WAIT_COMMAND=[ echo "WAIT COUCHBASE"; $(couchbase-cli server-list --cluster=couchbase:8091 -u root -p foobar) = 342 ]
-        - WAIT_START_CMD=/init.sh
-        - WAIT_SLEEP=2
-        - WAIT_LOOPS=10
+        - REBALANCE_CLUSTER
+
