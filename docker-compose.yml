@@ -20,7 +20,6 @@ couchbase:
     build: .
     links:
         - couchbase-init:couchbase
-        - elastic-init:elastic-couchbase
     ports:
         - "8091"
 couchbase-config:
