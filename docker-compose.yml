@@ -1,39 +1,39 @@
-elastic:
-    container_name: elastic
+elastic-init:
     image: clakech/elastic-couchbase
     ports:
         - "9200:9200"
         - "9300:9300"
         - "9091:9091"
-elastic2:
-    container_name: elastic2
-    image: clakech/elastic-couchbase
+    environment:
+        - INIT_CLUSTER=1
+elastic:
     ports:
-        - "9201:9200"
-        - "9301:9300"
-        - "9092:9091"
-couchbase:
+        - "9200"
+        - "9300"
+        - "9091"
+    image: clakech/elastic-couchbase
+couchbase-init:
     build: .
     command: sh wait_to_start.sh
     links:
-        - elastic:elastic-couchbase
+        - elastic-init:elastic-couchbase
+    ports:
+        - "8091:8091"
     environment:
-        - WAIT_COMMAND=[ $(curl --write-out %{http_code} --silent --output /dev/null http://elastic-couchbase:9200/data) = 200 ]
+        - WAIT_COMMAND=[ echo "WAIT ELASTIC"; $(curl --write-out %{http_code} --silent --output /dev/null http://elastic-couchbase:9200/data) = 200 ]
         - WAIT_START_CMD=/init.sh
         - WAIT_SLEEP=2
         - WAIT_LOOPS=10
         - INIT_CLUSTER=1
-    ports:
-        - "8091:8091"
-couchbase2:
+couchbase:
     build: .
     command: sh wait_to_start.sh
     links:
-        - couchbase
+        - couchbase-init:couchbase
+    ports:
+        - "8091"
     environment:
-        - WAIT_COMMAND=[ $(couchbase-cli server-list --cluster=localhost:8091 -u root -p foobar) = 342 ]
+        - WAIT_COMMAND=[ echo "WAIT COUCHBASE"; $(couchbase-cli server-list --cluster=couchbase:8091 -u root -p foobar) = 342 ]
         - WAIT_START_CMD=/init.sh
         - WAIT_SLEEP=2
         - WAIT_LOOPS=10
-    ports:
-        - "8092:8091"
