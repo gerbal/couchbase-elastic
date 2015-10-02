@@ -16,15 +16,10 @@ couchbase-init:
     build: .
     ports:
         - "8091:8091"
+    links:
+        - elastic:elastic-couchbase
 couchbase:
     build: .
     links:
         - couchbase-init:couchbase
-couchbase-config:
-    build: config
-    links:
-        - couchbase:couchbase
-        - elastic-init:elastic-couchbase
-    environment:
-        - REBALANCE_CLUSTER
 
